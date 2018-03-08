@@ -248,6 +248,16 @@ button_press_cb (EphyNotebook   *notebook,
 		g_action_activate (action, NULL);
 	}
 
+  /* Close the tab if it gets middle clicked */
+  if (event->type == GDK_BUTTON_PRESS &&
+      event->button == 2 &&
+      (event->state & gtk_accelerator_get_default_mod_mask ()) == 0)
+  {
+    GtkWidget *tab;
+    tab = gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook), tab_clicked);
+    g_signal_emit (notebook, signals[TAB_CLOSE_REQUEST], 0, tab);
+  }
+
   return FALSE;
 }
 
